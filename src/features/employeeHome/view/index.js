@@ -1,10 +1,17 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import EmployeeHomeComponent from "./component";
+import * as actions from "../store/action";
 
-const EmployeeHome = ({ employees }) => {
+const EmployeeHome = ({ employees, getEmployeeRequest }) => {
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (!employees.list.length) {
+      getEmployeeRequest();
+    }
+  }, [employees.list, getEmployeeRequest]);
 
   const handleChangeSearch = useCallback((event) => {
     const formattedSearch = event.target.value.trim();
@@ -38,4 +45,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(EmployeeHome);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getEmployeeRequest: () => dispatch(actions.getEmployeeRequest()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeHome);
