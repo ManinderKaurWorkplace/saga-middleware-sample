@@ -6,17 +6,29 @@ import * as actions from "../store/action";
 
 const EmployeeHome = ({ employees, getEmployeeRequest }) => {
   const [search, setSearch] = useState("");
+  const [employeeList, setEmployeeList] = useState([]);
 
   useEffect(() => {
     if (!employees.list.length) {
       getEmployeeRequest();
     }
+    setEmployeeList(employees.list);
   }, [employees.list, getEmployeeRequest]);
 
-  const handleChangeSearch = useCallback((event) => {
-    const formattedSearch = event.target.value.trim();
-    setSearch(formattedSearch);
-  }, []);
+  const handleChangeSearch = useCallback(
+    (event) => {
+      const formattedSearch = event.target.value.trim();
+      setSearch(formattedSearch);
+      const filteredEmployeeList = employees.list.filter(
+        (field) =>
+          field.employee_name.includes(formattedSearch) ||
+          (field.employee_salary || "").toString().includes(formattedSearch) ||
+          (field.employee_age || "").toString().includes(formattedSearch)
+      );
+      setEmployeeList(filteredEmployeeList);
+    },
+    [employees.list]
+  );
 
   const handleLoadRecords = useCallback(() => {
     //TODO:
@@ -28,7 +40,7 @@ const EmployeeHome = ({ employees, getEmployeeRequest }) => {
 
   return (
     <EmployeeHomeComponent
-      employeeList={employees.list}
+      employeeList={employeeList}
       loadingEmployees={employees.isLoading}
       search={search}
       selectedId={""}

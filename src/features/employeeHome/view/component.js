@@ -13,18 +13,17 @@ const EmployeeHomeComponent = ({
 }) => {
   return (
     <div>
-      <div>
-        <SearchField value={search} onChange={onChangeSearch} />
-      </div>
-      <div>
-        <Table
-          data={employeeList}
-          selectedId={selectedId}
-          loadingEmployees={loadingEmployees}
-          onLoadRecords={onLoadRecords}
-          onSelectRecord={onSelectRecord}
-        />
-      </div>
+      <SearchField value={search} onChange={onChangeSearch} />
+      <Table
+        data={employeeList}
+        noRecordMessage={
+          !!search && 'No records for "' + search + '". Try again'
+        }
+        selectedId={selectedId}
+        loadingEmployees={loadingEmployees}
+        onLoadRecords={onLoadRecords}
+        onSelectRecord={onSelectRecord}
+      />
     </div>
   );
 };

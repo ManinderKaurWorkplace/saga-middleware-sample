@@ -5,6 +5,7 @@ const TableView = ({
   data = [],
   selectedId = "",
   loadingEmployees = false,
+  noRecordMessage = "",
   onLoadRecords = () => {},
   onSelectRecord = () => {},
 }) => {
@@ -63,7 +64,7 @@ const TableView = ({
           <p>
             {loadingEmployees
               ? "Loading employee records..."
-              : "No Records Found"}
+              : noRecordMessage || "No Records Found"}
           </p>
         </div>
       )}
