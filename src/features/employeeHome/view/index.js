@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from "react";
+import { connect } from "react-redux";
 
 import EmployeeHomeComponent from "./component";
 
-const EmployeeHome = () => {
+const EmployeeHome = ({ employees }) => {
   const [search, setSearch] = useState("");
 
   const handleChangeSearch = useCallback((event) => {
@@ -20,8 +21,8 @@ const EmployeeHome = () => {
 
   return (
     <EmployeeHomeComponent
-      employeeList={[]}
-      loadingEmployees={false}
+      employeeList={employees.list}
+      loadingEmployees={employees.isLoading}
       search={search}
       selectedId={""}
       onChangeSearch={handleChangeSearch}
@@ -31,4 +32,10 @@ const EmployeeHome = () => {
   );
 };
 
-export default EmployeeHome;
+const mapStateToProps = (state) => {
+  return {
+    employees: state.employee,
+  };
+};
+
+export default connect(mapStateToProps)(EmployeeHome);
